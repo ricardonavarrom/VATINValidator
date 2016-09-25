@@ -1,5 +1,5 @@
 {
-  "name": "ricardonavarrom/vatin-validator-bundle",
+  "name": "ricardonavarrom/vatin-validator",
   "type": "library",
   "description": "A PHP library for for validating VAT identification numbers (VATINs).",
   "keywords": ["vat", "validation", "vat identification numbers", "vat validation", "php", "php library"],

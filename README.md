@@ -36,9 +36,9 @@ $nif = '75096482X';
 $nie = 'Z4503838Y';
 $cif = 'A83472787';
 $locatedValidator = new VATINValidatorES();
-$nifIsValid = $locatedValidator->validateNIF($vatin);
-$nieIsValid = $locatedValidator->validateNIE($vatin);
-$cifIsValid = $locatedValidator->validateCIF($vatin);
+$nifIsValid = $locatedValidator->validateNIF($nif);
+$nieIsValid = $locatedValidator->validateNIE($nie);
+$cifIsValid = $locatedValidator->validateCIF($cif);
 ```
 
 

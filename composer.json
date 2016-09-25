@@ -1,0 +1,24 @@
+{
+  "name": "ricardonavarrom/vatin-validator-bundle",
+  "type": "library",
+  "description": "A PHP library for for validating VAT identification numbers (VATINs).",
+  "keywords": ["vat", "validation", "vat identification numbers", "vat validation", "php", "php library"],
+  "homepage": "https://github.com/ricardonavarrom/VATINValidator",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ricardo Navarro Moral",
+      "email": "ricardonavarromoral@gmail.com"
+    }
+  ],
+  "require": {},
+  "require-dev": {
+    "phpunit/phpunit": "4.8,*",
+    "satooshi/php-coveralls": "~1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "ricardonavarrom\\VATINValidator\\": "src/VATINValidator/"
+    }
+  }
+}

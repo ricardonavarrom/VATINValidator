@@ -68,7 +68,8 @@ class VATINValidatorES implements VATINValidatorLocatedInterface
     private function getCIFPairSum($centralDigits)
     {
         $pairSum = 0;
-        for ($i = 1; $i < strlen($centralDigits); $i += 2) {
+        $centralDigitsNum = strlen($centralDigits);
+        for ($i = 1; $i < $centralDigitsNum; $i += 2) {
             $pairSum += (int)$centralDigits[$i];
         }
 
@@ -78,7 +79,8 @@ class VATINValidatorES implements VATINValidatorLocatedInterface
     private function getCIFOddDoubleSum($centralDigits)
     {
         $oddDoubleSum = 0;
-        for ($i = 0; $i < strlen($centralDigits); $i += 2) {
+        $centralDigitsNum = strlen($centralDigits);
+        for ($i = 0; $i < $centralDigitsNum; $i += 2) {
             $oddDoubleSum += (int)array_sum(str_split($centralDigits[$i] * 2));
         }
 

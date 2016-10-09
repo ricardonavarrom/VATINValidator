@@ -3,6 +3,7 @@ VATINValidator
 [![Build Status](https://travis-ci.org/ricardonavarrom/VATINValidator.svg?branch=master)](https://travis-ci.org/ricardonavarrom/VATINValidator)
 [![Coverage Status](https://coveralls.io/repos/github/ricardonavarrom/VATINValidator/badge.svg?branch=master)](https://coveralls.io/github/ricardonavarrom/VATINValidator?branch=master)
 [![Total Downloads](https://poser.pugx.org/ricardonavarrom/vatin-validator/downloads)](https://packagist.org/packages/ricardonavarrom/vatin-validator)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/7a914b00-9a33-43ad-bdfe-917f26cd7080/mini.png)](https://insight.sensiolabs.com/projects/7a914b00-9a33-43ad-bdfe-917f26cd7080)
 
 A PHP library for for validating VAT identification numbers (VATINs).
 

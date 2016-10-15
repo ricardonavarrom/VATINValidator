@@ -417,6 +417,26 @@ class VATINValidatorESTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @test */
+    public function validateCIF_withGoodMixedControlDigitOptionAlphanumeric_returnsTrue()
+    {
+        $vatin = 'F1066852C';
+
+        $validated = $this->validator->validateCIF($vatin);
+
+        $this->assertTrue($validated);
+    }
+
+    /** @test */
+    public function validateCIF_withGoodMixedControlDigitOptionNumeric_returnsTrue()
+    {
+        $vatin = 'F10668523';
+
+        $validated = $this->validator->validateCIF($vatin);
+
+        $this->assertTrue($validated);
+    }
+
+    /** @test */
     public function validateCIF_withGoodVATINAndLowerOrganizationAndNoAllowedLowerCase_returnsFalse()
     {
         $vatin = 'q1929730H';

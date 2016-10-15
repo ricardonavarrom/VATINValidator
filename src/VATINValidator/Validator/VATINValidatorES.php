@@ -5,6 +5,9 @@ namespace ricardonavarrom\VATINValidator\Validator;
 class VATINValidatorES implements VATINValidatorLocatedInterface
 {
     const CONTROL_DIGITS = 'TRWAGMYFPDXBNJZSQVHLCKE';
+    const ORGANIZATION_TO_NUMBER_ARRAY = [
+        0 => 'J', 1 => 'A', 2 => 'B', 3 => 'C', 4 => 'D', 5 => 'E', 6 => 'F', 7 => 'G', 8 => 'H', 9 => 'I'
+    ];
 
     public function validateNIF($vatin, $allowLowerCase = true)
     {
@@ -47,16 +50,25 @@ class VATINValidatorES implements VATINValidatorLocatedInterface
         }
 
         list(, $organization, $provinceCode, $numericPart, $controlDigit) = $matches;
+
         if ($allowLowerCase) {
             $organization = strtoupper($organization);
             $controlDigit = strtoupper($controlDigit);
+        } elseif (!$allowLowerCase && (ctype_lower($organization) || ctype_lower($controlDigit))) {
+            return false;
         }
-        $centralDigits = $provinceCode . $numericPart;
-        $pairSum = $this->getCIFPairSum($centralDigits);
-        $oddDoubleSum = $this->getCIFOddDoubleSum($centralDigits);
-        $digitControlSum = $pairSum + $oddDoubleSum;
 
-        return $controlDigit == $this->getCIFDigitControl($organization, $digitControlSum);
+        $centralDigits = $provinceCode . $numericPart;
+        $evenSum = $this->getCIFEvenSum($centralDigits);
+        $oddDoubleSum = $this->getCIFOddDoubleSum($centralDigits);
+        $controlDigitSum = $evenSum + $oddDoubleSum;
+        $splitedControlDigitSum = str_split($controlDigitSum);
+        $controlDigitSumUnits = $splitedControlDigitSum[count($splitedControlDigitSum) - 1];
+        if ($controlDigitSumUnits > 0) {
+            $controlDigitSumUnits = 10 - $controlDigitSumUnits;
+        }
+
+        return $this->validateNIFControlDigit($controlDigit, $organization, $controlDigitSumUnits);
     }
 
     public function validate($vatin, $allowLowerCase = true)
@@ -65,15 +77,15 @@ class VATINValidatorES implements VATINValidatorLocatedInterface
         || $this->validateCIF($vatin, $allowLowerCase);
     }
 
-    private function getCIFPairSum($centralDigits)
+    private function getCIFEvenSum($centralDigits)
     {
-        $pairSum = 0;
+        $evenSum = 0;
         $centralDigitsNum = strlen($centralDigits);
         for ($i = 1; $i < $centralDigitsNum; $i += 2) {
-            $pairSum += (int)$centralDigits[$i];
+            $evenSum += (int)$centralDigits[$i];
         }
 
-        return $pairSum;
+        return $evenSum;
     }
 
     private function getCIFOddDoubleSum($centralDigits)
@@ -87,23 +99,17 @@ class VATINValidatorES implements VATINValidatorLocatedInterface
         return $oddDoubleSum;
     }
 
-    private function getCIFDigitControl($organization, $digitControlSum)
+    private function validateNIFControlDigit($controlDigit, $organization, $controlDigitSumUnits)
     {
-        $splitedDigitControlSum = str_split($digitControlSum);
-        $digitControlSumUnits = $splitedDigitControlSum[count($splitedDigitControlSum) - 1];
-        if ($digitControlSumUnits > 0) {
-            $digitControlSumUnits = 10 - $digitControlSumUnits;
-        }
-
-        if (!strpos('PQSW', $organization)) {
-            $digitControl = $digitControlSumUnits;
+        if (false !== strpos('ABEH', $organization)) {
+            $validControlDigits[] = $controlDigitSumUnits;
+        } elseif (false !== strpos('PQSW', $organization)) {
+            $validControlDigits[] = static::ORGANIZATION_TO_NUMBER_ARRAY[$controlDigitSumUnits];
         } else {
-            $organizationToNumberArray = [
-                0 => 'J', 1 => 'A', 2 => 'B', 3 => 'C', 4 => 'D', 5 => 'E', 6 => 'F', 7 => 'G', 8 => 'H', 9 => 'I'
-            ];
-            $digitControl = $organizationToNumberArray[$digitControlSumUnits];
+            $validControlDigits[] = $controlDigitSumUnits;
+            $validControlDigits[] = static::ORGANIZATION_TO_NUMBER_ARRAY[$controlDigitSumUnits];
         }
 
-        return $digitControl;
+        return in_array($controlDigit, $validControlDigits);
     }
 }
